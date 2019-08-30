@@ -207,7 +207,7 @@ if __name__ =="__main__":
     # file_name_list = ["pku_l1","pku_l2","pku_l3"]
     # plt_title = "num_of_layers"
 
-    # 隐藏层结点数对比
+    # lstm vs blstm
     cost_file_list = [pre + "pku_lstm.txt", pre + "pku_03.txt"]
     file_name_list = ["pku_lstm", "pku_blstm"]
     plt_title = "lstm vs blstm"
