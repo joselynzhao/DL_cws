@@ -193,6 +193,63 @@ def draw_compare_acc(cost_file_list,file_name_list,plt_title):
         cost_f.close()
 
 
+def draw_compare(cost_file_list,file_name_list,plt_title):
+    cost_f_list = []
+    for cost_file in cost_file_list:
+        cost_f = codecs.open(cost_file,'r','utf-8')
+        cost_f_list.append(cost_f)
+    cost_datas = []
+    for cost_f in cost_f_list:
+        datas=[]
+        for line in cost_f.readlines():
+            data_list = line.strip().split(', ')
+            data_list_float = []
+            for data in data_list:
+                data = float(data)
+                data_list_float.append(data)
+            # print(data_list_float)
+            datas.append(data_list_float)
+        cost_datas.append(datas)
+    length = len(cost_datas[0][0])
+
+
+    #开始绘图
+    plt.figure(figsize=(12,6))
+    colors = ['r','g','b','y','k']
+    start_point=5
+    x1 = np.linspace(start_point,length,length-start_point)
+    print "len x = "+str(len(x1))
+    plt.subplot(1,2,1)
+    for i in range(len(cost_datas)):
+        line = cost_datas[i][2] #2表示测试准确率
+        max_point = np.argmax(line)
+        plt.plot(x1,line[start_point:],colors[i],label=file_name_list[i])
+        plt.plot(max_point,line[max_point],colors[i]+'s')
+        plt.annotate(str(line[max_point])[:6],xy=(max_point,line[max_point]))
+    plt.xlabel("epoch")
+    plt.ylabel("val_acc")
+    plt.title(plt_title+"[acc]")
+    plt.legend(loc='lower right')
+
+    plt.subplot(1, 2, 2)
+    for i in range(len(cost_datas)):
+        line = cost_datas[i][3]  # 3表示测试loss
+        min_point = np.argmin(line)
+        plt.plot(x1, line[start_point:], colors[i], label=file_name_list[i])
+        plt.plot(min_point, line[min_point], colors[i] + 's')
+        plt.annotate(str(line[min_point])[:6], xy=(min_point, line[min_point]))
+    plt.xlabel("epoch")
+    plt.ylabel("val_loss")
+    plt.title(plt_title+'[loss]')
+    plt.legend(loc='upper right')
+    plt.savefig("images/"+plt_title)
+    plt.show()
+    for cost_f in cost_f_list:
+        cost_f.close()
+
+
+
+
 
 if __name__ =="__main__":
 
@@ -210,7 +267,7 @@ if __name__ =="__main__":
     # lstm vs blstm
     # cost_file_list = [pre + "pku_lstm.txt", pre + "pku_03.txt"]
     # file_name_list = ["pku_lstm", "pku_blstm"]
-    # plt_title = "lstm vs blstm"
+    # plt_title = "lstm_vs_blstm"
 
     # 隐藏层结点数对比
     # cost_file_list = [pre + "pku_n64.txt", pre + "pku_04.txt", pre + "pku_n192.txt",pre+"pku_n256.txt"]
@@ -232,5 +289,5 @@ if __name__ =="__main__":
     file_name_list = ["pku", "msr", "as"]
     plt_title = "data_set"
 
-    draw_compare_acc(cost_file_list,file_name_list,plt_title)
+    draw_compare(cost_file_list,file_name_list,plt_title)
 
