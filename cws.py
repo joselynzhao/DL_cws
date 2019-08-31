@@ -11,8 +11,7 @@
 '''
 
 import  random
-import re
-import numpy as np
+
 
 '''
 dec:内部函数不供外部调用
@@ -126,11 +125,11 @@ def cws_cut(s,chars,model,maxlen):
 
 from model_train import *
 if __name__ =='__main__':
-    model_name = "model_pku02"
+    model_name = "model_msr"
     model_file = "model_save/" + model_name + ".h5"
     model = get_model(model_file)
 
-    chars_file = "dictionary/chars02_pku.txt"
+    chars_file = "dictionary/chars02_msr.txt"
     chars = get_chars(chars_file)
 
     maxlen = 32

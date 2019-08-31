@@ -11,18 +11,7 @@
 '''
 
 
-import  re
-import numpy as np
-import  pandas as pd
-from keras.utils import np_utils
 
-from keras import  Sequential
-from keras.layers import Dense, Embedding, LSTM, TimeDistributed, Input, Bidirectional,Dropout
-from keras.models import Model
-from keras.models import load_model
-
-from pre_handle import *
-from data_handle import *
 from model_train import *
 
 
@@ -51,13 +40,13 @@ if __name__ =="__main__":
     batch_size = 64 #不指定则默认为32
 
     #加载测试数据集和字典
-    chars_file = "dictionary/chars02_pku.txt"
-    test_file = "data_set/test_pku.txt"
+    chars_file = "dictionary/chars02_msr.txt"
+    test_file = "data_set/test_msr.txt"
     chars = get_chars(chars_file)
     test_data = init_datas(test_file, chars, maxlen)
 
     # 加载模型
-    model_name = "model_pku_lstm"
+    model_name = "model_msr_final"
     model_file = "model_save/" + model_name + ".h5"
     model = get_model(model_file)
 

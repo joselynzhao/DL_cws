@@ -10,11 +10,10 @@
 @DES:  用于绘制图像
 '''
 import matplotlib.pyplot as plt
-import macpath
 import numpy as np
 import  codecs
 
-import  re
+
 def draw_cost_file(cost_file):
     cost_f = codecs.open(cost_file, 'r', 'utf-8')
     datas = []
@@ -33,9 +32,9 @@ def draw_cost_file(cost_file):
     all_len = len(tra_acc)
     # eva_loss = datas[4][0]
     # eva_acc = datas[5][0]
-    plt.figure()
+    plt.figure(figsize=(12,6))
 
-    plt.subplot(2,1,1)
+    plt.subplot(1,2,1)
     # print len(tra_acc[10:])
 
     # tra_acc=tra_acc[5:]
@@ -59,7 +58,7 @@ def draw_cost_file(cost_file):
     # plt.imshow()
 
 
-    plt.subplot(2, 1, 2)
+    plt.subplot(1, 2, 2)
     # min_indx = np.argmin(a)  # min value index
 
     # tra_loss = tra_loss[10:]
@@ -253,9 +252,12 @@ def draw_compare(cost_file_list,file_name_list,plt_title):
 
 if __name__ =="__main__":
 
-    cost_file = "cost_file/model_pku_04.txt"
+    cost_file = "cost_file/model_msr_final.txt"
     # draw_acc(cost_file)
     # draw_loss(cost_file)
+    draw_cost_file(cost_file)
+
+
 
     pre = "cost_file/model_"
 
@@ -285,9 +287,9 @@ if __name__ =="__main__":
     # plt_title = "batch_size"
 
     # 数据集
-    cost_file_list = [pre + "pku_04.txt", pre + "msr.txt", pre + "as.txt"]
-    file_name_list = ["pku", "msr", "as"]
-    plt_title = "data_set"
-
-    draw_compare(cost_file_list,file_name_list,plt_title)
+    # cost_file_list = [pre + "pku_04.txt", pre + "msr.txt", pre + "as.txt"]
+    # file_name_list = ["pku", "msr", "as"]
+    # plt_title = "data_set"
+    #
+    # draw_compare(cost_file_list,file_name_list,plt_title)
 

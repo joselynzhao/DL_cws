@@ -9,16 +9,13 @@
 @TIME:2019/8/19 14:44
 @DES:
 '''
-import  re
-import numpy as np
-import  pandas as pd
-from keras.utils import np_utils
+
 
 from keras import  Sequential
 from keras.layers import Dense, Embedding, LSTM, TimeDistributed, Input, Bidirectional,Dropout
-from keras.models import Model
+
 from keras.models import load_model
-import keras
+
 
 from data_handle import *
 from pre_handle import *
@@ -68,21 +65,8 @@ def gener_model01(maxlen,len_chars,word_size,num_lstm,model_file_name):
     return model
 
 
+
 def gener_model02(maxlen,len_chars,word_size,num_lstm,model_file_name):
-    model = Sequential()
-    model.add(Embedding(len_chars + 1, word_size, input_length=maxlen))
-    '''len_chars+1是输入维度，word_size是输出维度，input_length是节点数'''
-    model.add(Bidirectional(LSTM(num_lstm, return_sequences=True), merge_mode='sum'))
-    model.add(TimeDistributed(Dense(5, activation='softmax')))
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy','F1'])
-    model.save(model_file_name)
-    model.summary()
-    return model
-
-
-
-
-def gener_model03(maxlen,len_chars,word_size,num_lstm,model_file_name):
     model = Sequential()
     model.add(Embedding(len_chars + 1, word_size, input_length=maxlen))
     '''len_chars+1是输入维度，word_size是输出维度，input_length是节点数'''
@@ -96,7 +80,7 @@ def gener_model03(maxlen,len_chars,word_size,num_lstm,model_file_name):
     return model
 
 
-def gener_model04(maxlen,len_chars,word_size,num_lstm,model_file_name):
+def gener_model03(maxlen,len_chars,word_size,num_lstm,model_file_name):
     model = Sequential()
     model.add(Embedding(len_chars + 1, word_size, input_length=maxlen))
     '''len_chars+1是输入维度，word_size是输出维度，input_length是节点数'''
@@ -135,43 +119,6 @@ def get_model(model_file_name):
 '''
 dec：采用自我评估的方式,validation_split=0.1
 '''
-def train_model(model,train_data,maxlen,batch_size,epoch,model_file,cost_file,maxAcc,split):
-    '''
-    :param model: 待训练模型
-    :param train_data:  训练数据集
-    :param maxlen:  词窗大小
-    :param batch_size:
-    :param epoch:
-    :param model_file: 模型存储文件
-    :param cost_file: console 输出日志
-    :param maxAcc: 超过maxAcc之后保存模型
-    :split: 训练集和测试集的划分比例
-    :return:  maxAcc
-    '''
-    print("开始训练！")
-    cost_f = codecs.open(cost_file, 'a', 'utf-8')
-    for i in range(epoch): #训练epoch轮
-        print('第'+str(i+1)+"轮训练开始")
-        history = model.fit(np.array(list(train_data['x'])), np.array(list(train_data['y'])).reshape((-1, maxlen, 5)),
-                            batch_size=batch_size,validation_split=split)
-        s = str(history.history)
-        print s
-        s = re.findall('\[(.*?)\]', s)
-        val_acc = s[2]
-        # global maxAcc
-        if(val_acc>maxAcc):
-            maxAcc = val_acc
-            model.save(model_file)
-            cost_f.write(' * ')
-            print "maxAcc = " + str(maxAcc)
-            print "------------------------保存模型-----------------------------"
-        else:
-            cost_f.write('   ')
-        cost_f.write(str(i) + ' : ')
-        cost_f.write(str(history.history) + ' ;\n')
-    cost_f.close()
-    return maxAcc
-
 def train_model02(model,train_data,maxlen,batch_size,epoch,model_file,cost_file,split):
     cost_f = codecs.open(cost_file, 'a', 'utf-8')
     history = model.fit(np.array(list(train_data['x'])), np.array(list(train_data['y'])).reshape((-1, maxlen, 5)),
@@ -207,25 +154,25 @@ log_filepath = '/tmp/keras_log'
 if __name__ == "__main__":
     # 超参数设定
     maxlen = 32
-    epoch = 30
-    batch_size = 1024
+    epoch = 5
+    batch_size = 512
     word_size =128
     num_lstm = 128
 
     # 加载训练数据集和字典
-    chars_file = "dictionary/chars02_pku.txt"
-    train_file = "data_set/train_pku.txt"
+    chars_file = "dictionary/chars02_msr.txt"
+    train_file = "data_set/train_msr.txt"
     chars = get_chars(chars_file)
     train_data = init_datas(train_file, chars, maxlen)
 
     # 搭建模型
-    model_name = "model_pku_lstm"
+    model_name = "model_msr_final"
     model_file ="model_save/"+model_name+".h5"
-    model = gener_model01(maxlen,len(chars),word_size,num_lstm,model_file)
+    # model = gener_model02(maxlen,len(chars),word_size,num_lstm,model_file)
+    model = get_model(model_file)
 
     # 开始训练
     cost_file= "cost_file/"+model_name+".txt"
-    maxAcc = 0
     split = 0.1
     train_model02(model,train_data,maxlen,batch_size,epoch,model_file,cost_file,split)
 
