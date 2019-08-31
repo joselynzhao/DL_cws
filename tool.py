@@ -208,9 +208,9 @@ if __name__ =="__main__":
     # plt_title = "num_of_layers"
 
     # lstm vs blstm
-    cost_file_list = [pre + "pku_lstm.txt", pre + "pku_03.txt"]
-    file_name_list = ["pku_lstm", "pku_blstm"]
-    plt_title = "lstm vs blstm"
+    # cost_file_list = [pre + "pku_lstm.txt", pre + "pku_03.txt"]
+    # file_name_list = ["pku_lstm", "pku_blstm"]
+    # plt_title = "lstm vs blstm"
 
     # 隐藏层结点数对比
     # cost_file_list = [pre + "pku_n64.txt", pre + "pku_04.txt", pre + "pku_n192.txt",pre+"pku_n256.txt"]
@@ -228,9 +228,9 @@ if __name__ =="__main__":
     # plt_title = "batch_size"
 
     # 数据集
-    # cost_file_list = [pre + "pku_04.txt", pre + "msr.txt", pre + "as.txt"]
-    # file_name_list = ["pku", "msr", "as"]
-    # plt_title = "data_set"
+    cost_file_list = [pre + "pku_04.txt", pre + "msr.txt", pre + "as.txt"]
+    file_name_list = ["pku", "msr", "as"]
+    plt_title = "data_set"
 
     draw_compare_acc(cost_file_list,file_name_list,plt_title)
 
