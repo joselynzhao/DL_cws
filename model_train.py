@@ -122,8 +122,8 @@ dec：采用自我评估的方式,validation_split=0.1
 def train_model02(model,train_data,maxlen,batch_size,epoch,model_file,cost_file,split):
     cost_f = codecs.open(cost_file, 'a', 'utf-8')
     history = model.fit(np.array(list(train_data['x'])), np.array(list(train_data['y'])).reshape((-1, maxlen, 5)),
-                        batch_size=batch_size, validation_split=split,epochs=epoch)
-    # print(history) callbacks=[tbCallBack]
+                        batch_size=batch_size, validation_split=split,epochs=epoch,callbacks=[tbCallBack])
+    # print(history)
     s = str(history.history)
     # print s
     s = re.findall('\[(.*?)\]', s)
